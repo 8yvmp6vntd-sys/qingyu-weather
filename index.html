@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=6" />
+  <link rel="stylesheet" href="./styles.css?v=7" />
 </head>
 <body>
   <main class="app-shell">
@@ -58,8 +58,8 @@
       <div class="donate-qr-link">
         <img class="donate-qr" src="./donate-qr.jpeg" alt="微信收款二维码" />
       </div>
-      <a class="wechat-pay-button" href="wxp://f2f0X5bO47_7D7ODvFpbaMMU0TJ4XSfEGZiBrAmcqdI9gHb0xl6EHRcUAEs1rY3jfJzI">打开微信支付</a>
-      <p class="donate-tip">优先点击“打开微信支付”；如果没有跳转，请在微信内长按二维码，选择“识别图中二维码”。</p>
+      <button class="wechat-pay-button" id="wechatPayButton" type="button">打开微信支付</button>
+      <p class="donate-tip" id="donateTip">优先点击“打开微信支付”；如果没有跳转，请在微信内长按二维码，选择“识别图中二维码”。</p>
     </form>
   </dialog>
 
@@ -113,6 +113,6 @@
   </template>
 
   <script src="./city-data.js?v=2"></script>
-  <script src="./app.js?v=10"></script>
+  <script src="./app.js?v=11"></script>
 </body>
 </html>

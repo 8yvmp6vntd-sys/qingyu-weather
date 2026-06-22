@@ -358,15 +358,15 @@ h1 {
 .donate-button {
   display: block;
   width: fit-content;
-  min-width: 136px;
-  margin: 14px auto 0;
+  min-width: 116px;
+  margin: 12px auto 0;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 7px 12px;
+  padding: 6px 10px;
   color: var(--text);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   background: rgba(255, 255, 255, 0.08);
   cursor: pointer;
   transition: transform 180ms ease, background 180ms ease;
@@ -437,6 +437,7 @@ h1 {
 .wechat-pay-button {
   display: block;
   width: 100%;
+  cursor: pointer;
   border: 0;
   border-radius: 16px;
   padding: 13px 16px;

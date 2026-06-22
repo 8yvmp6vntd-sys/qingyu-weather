@@ -557,6 +557,9 @@ loadWeather(initialLocation.latitude, initialLocation.longitude, initialLocation
 const donateButton = document.querySelector("#donateButton");
 const donateDialog = document.querySelector("#donateDialog");
 const closeDonateDialog = document.querySelector("#closeDonateDialog");
+const wechatPayButton = document.querySelector("#wechatPayButton");
+const donateTip = document.querySelector("#donateTip");
+const wechatPayUrl = "wxp://f2f0X5bO47_7D7ODvFpbaMMU0TJ4XSfEGZiBrAmcqdI9gHb0xl6EHRcUAEs1rY3jfJzI";
 
 donateButton.addEventListener("click", () => {
   donateDialog.showModal();
@@ -564,4 +567,9 @@ donateButton.addEventListener("click", () => {
 
 closeDonateDialog.addEventListener("click", () => {
   donateDialog.close();
+});
+
+wechatPayButton.addEventListener("click", () => {
+  donateTip.textContent = "正在尝试打开微信支付。如果没有跳转，请在微信内长按二维码，选择“识别图中二维码”。";
+  window.location.href = wechatPayUrl;
 });
