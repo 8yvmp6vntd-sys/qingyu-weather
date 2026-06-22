@@ -49,6 +49,22 @@ input {
   padding: 24px;
 }
 
+.weather-card::before {
+  content: "銮";
+  position: absolute;
+  top: -52px;
+  left: 50%;
+  z-index: 0;
+  color: rgba(255, 255, 255, 0.08);
+  font-size: clamp(7.5rem, 34vw, 18rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.1em;
+  pointer-events: none;
+  transform: translateX(-50%);
+  user-select: none;
+}
+
 .location-settings,
 .row-title {
   position: relative;
