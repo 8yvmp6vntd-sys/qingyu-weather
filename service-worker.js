@@ -1,4 +1,4 @@
-const CACHE_NAME = "qingyu-weather-v10";
+const CACHE_NAME = "qingyu-weather-v11";
 const APP_SHELL = [
   "./",
   "./index.html",
