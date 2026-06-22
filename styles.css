@@ -377,7 +377,7 @@ h1 {
 }
 
 .donate-dialog {
-  width: min(380px, calc(100% - 32px));
+  width: min(420px, calc(100% - 24px));
   border: 1px solid var(--line);
   border-radius: 24px;
   color: var(--text);
@@ -415,10 +415,27 @@ h1 {
   line-height: 1.6;
 }
 
+.donate-qr-link {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 22px;
+  background: #fff;
+}
+
 .donate-qr {
-  width: 220px;
-  height: 220px;
-  border-radius: 16px;
+  width: min(280px, 70vw);
+  height: min(280px, 70vw);
+  border-radius: 12px;
   margin: 0 auto;
   display: block;
+  object-fit: contain;
+}
+
+.donate-tip {
+  margin: 0;
+  color: rgba(247, 251, 255, 0.72);
+  font-size: 0.82rem;
+  line-height: 1.65;
 }
