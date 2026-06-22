@@ -50,6 +50,8 @@ const defaultLocation = {
   admin3: "黄浦区",
 };
 
+const savedLocationKey = "qingyu-weather-location";
+
 const cityLibrary = (window.CITY_LIBRARY || []).map(([name, admin1, admin2, admin3, latitude, longitude, keywords = ""]) => {
   const searchText = normalizeLocationKey(`${name}${admin1}${admin2}${admin3}${keywords}`);
   return {
@@ -134,7 +136,7 @@ async function chooseCity(city) {
     return;
   }
 
-  const updated = await loadWeatherByCity(city.trim());
+  const updated = await loadWeatherByCity(city.trim(), true);
   if (updated) {
     cityDialog.close();
   }
@@ -142,16 +144,22 @@ async function chooseCity(city) {
 
 async function chooseLocation(location) {
   setStatus("设置中...");
-  await loadWeather(location.latitude, location.longitude, location.name, location);
-  cityDialog.close();
+  const updated = await loadWeather(location.latitude, location.longitude, location.name, location);
+  if (updated) {
+    saveSelectedLocation(location);
+    cityDialog.close();
+  }
 }
 
-async function loadWeatherByCity(city) {
+async function loadWeatherByCity(city, shouldSave = false) {
   try {
     setStatus("设置中...");
     const location = await getLocation(city);
-    await loadWeather(location.latitude, location.longitude, location.name, location);
-    return true;
+    const updated = await loadWeather(location.latitude, location.longitude, location.name, location);
+    if (updated && shouldSave) {
+      saveSelectedLocation(location);
+    }
+    return updated;
   } catch (error) {
     setStatus(error.message || "设置失败，请重试");
     return false;
@@ -388,8 +396,48 @@ async function loadWeather(latitude, longitude, displayName, location = {}) {
     renderHourlyForecast(data.hourly, data.current.time);
     renderDailyForecast(data.daily);
     setStatus("位置设置");
+    return true;
   } catch (error) {
     setStatus(error.message || "天气加载失败");
+    return false;
+  }
+}
+
+function saveSelectedLocation(location) {
+  try {
+    const savedLocation = {
+      latitude: Number(location.latitude),
+      longitude: Number(location.longitude),
+      name: location.name,
+      admin1: location.admin1,
+      admin2: location.admin2,
+      admin3: location.admin3,
+    };
+
+    localStorage.setItem(savedLocationKey, JSON.stringify(savedLocation));
+  } catch (error) {
+    console.warn("保存位置失败", error);
+  }
+}
+
+function getSavedLocation() {
+  try {
+    const raw = localStorage.getItem(savedLocationKey);
+    if (!raw) return null;
+
+    const location = JSON.parse(raw);
+    if (!Number.isFinite(Number(location.latitude)) || !Number.isFinite(Number(location.longitude))) {
+      return null;
+    }
+
+    return {
+      ...location,
+      latitude: Number(location.latitude),
+      longitude: Number(location.longitude),
+      name: location.name || defaultLocation.name,
+    };
+  } catch (error) {
+    return null;
   }
 }
 
@@ -501,4 +549,5 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-loadWeather(defaultLocation.latitude, defaultLocation.longitude, defaultLocation.name, defaultLocation);
+const initialLocation = getSavedLocation() || defaultLocation;
+loadWeather(initialLocation.latitude, initialLocation.longitude, initialLocation.name, initialLocation);
