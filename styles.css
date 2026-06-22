@@ -357,15 +357,16 @@ h1 {
 
 .donate-button {
   display: block;
-  width: 100%;
-  margin-top: 24px;
+  width: fit-content;
+  min-width: 172px;
+  margin: 18px auto 0;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 14px 20px;
+  padding: 9px 16px;
   color: var(--text);
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   background: rgba(255, 255, 255, 0.08);
   cursor: pointer;
   transition: transform 180ms ease, background 180ms ease;
