@@ -551,3 +551,17 @@ if ("serviceWorker" in navigator) {
 
 const initialLocation = getSavedLocation() || defaultLocation;
 loadWeather(initialLocation.latitude, initialLocation.longitude, initialLocation.name, initialLocation);
+
+/* ── 打赏弹窗 ── */
+
+const donateButton = document.querySelector("#donateButton");
+const donateDialog = document.querySelector("#donateDialog");
+const closeDonateDialog = document.querySelector("#closeDonateDialog");
+
+donateButton.addEventListener("click", () => {
+  donateDialog.showModal();
+});
+
+closeDonateDialog.addEventListener("click", () => {
+  donateDialog.close();
+});

@@ -44,7 +44,20 @@
         <div class="daily-list" id="dailyList"></div>
       </section>
     </section>
+
+    <button class="donate-button" id="donateButton" type="button">☕ 打赏创作者</button>
   </main>
+
+  <dialog class="donate-dialog" id="donateDialog">
+    <form class="donate-dialog-card" method="dialog">
+      <div class="donate-dialog-header">
+        <h3>☕ 打赏创作者</h3>
+        <button class="dialog-close" id="closeDonateDialog" type="button" aria-label="关闭">×</button>
+      </div>
+      <p class="donate-dialog-desc">如果这个天气 App 对你有帮助，欢迎打赏支持～</p>
+      <img class="donate-qr" src="./donate-qr.jpeg" alt="收款二维码" />
+    </form>
+  </dialog>
 
   <dialog class="city-dialog" id="cityDialog">
     <form class="city-dialog-card" id="cityForm" method="dialog">
@@ -96,6 +109,6 @@
   </template>
 
   <script src="./city-data.js?v=2"></script>
-  <script src="./app.js?v=8"></script>
+  <script src="./app.js?v=9"></script>
 </body>
 </html>

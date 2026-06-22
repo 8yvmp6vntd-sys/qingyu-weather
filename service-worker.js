@@ -1,4 +1,4 @@
-const CACHE_NAME = "qingyu-weather-v4";
+const CACHE_NAME = "qingyu-weather-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -7,9 +7,10 @@ const APP_SHELL = [
   "./app.js",
   "./manifest.webmanifest",
   "./icon.svg",
+  "./apple-touch-icon.png",
   "./icon-192.png",
   "./icon-512.png",
-  "./apple-touch-icon.png"
+  "./donate-qr.jpeg"
 ];
 
 self.addEventListener("install", (event) => {
