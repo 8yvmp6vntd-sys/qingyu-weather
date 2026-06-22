@@ -358,13 +358,13 @@ h1 {
 .donate-button {
   display: block;
   width: fit-content;
-  min-width: 172px;
-  margin: 18px auto 0;
+  min-width: 136px;
+  margin: 14px auto 0;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 9px 16px;
+  padding: 7px 12px;
   color: var(--text);
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   background: rgba(255, 255, 255, 0.08);
@@ -432,6 +432,20 @@ h1 {
   margin: 0 auto;
   display: block;
   object-fit: contain;
+}
+
+.wechat-pay-button {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  padding: 13px 16px;
+  color: #06111e;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  background: linear-gradient(135deg, #79e1ff, #e6fbff);
 }
 
 .donate-tip {
