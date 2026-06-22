@@ -1,0 +1,20 @@
+{
+  "name": "晴雨天气",
+  "short_name": "晴雨天气",
+  "description": "查看未来 24 小时和未来 5 天天气的简洁天气 App。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07111f",
+  "theme_color": "#102544",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
