@@ -52,11 +52,11 @@ input {
 .weather-card::before {
   content: "銮";
   position: absolute;
-  top: -52px;
+  top: -30px;
   left: 50%;
   z-index: 0;
-  color: rgba(255, 255, 255, 0.08);
-  font-size: clamp(7.5rem, 34vw, 18rem);
+  color: rgba(255, 255, 255, 0.065);
+  font-size: clamp(4.8rem, 20vw, 10rem);
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.1em;
@@ -254,13 +254,13 @@ h1 {
 .hourly-list,
 .daily-list {
   display: grid;
-  gap: 10px;
-  margin-top: 16px;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .hourly-list {
   grid-auto-flow: column;
-  grid-auto-columns: 92px;
+  grid-auto-columns: 76px;
   overflow-x: auto;
   padding-bottom: 8px;
 }
@@ -285,10 +285,10 @@ h1 {
 
 .hourly-card,
 .daily-card {
-  min-height: 142px;
-  padding: 12px;
+  min-height: 108px;
+  padding: 8px 7px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 14px;
   background: var(--card);
   text-align: center;
 }
@@ -299,25 +299,25 @@ h1 {
 .daily-extra {
   margin-bottom: 0;
   color: var(--muted);
-  font-size: 0.84rem;
+  font-size: 0.74rem;
 }
 
 .hourly-icon,
 .daily-icon {
-  margin: 10px 0 6px;
-  font-size: 1.8rem;
+  margin: 6px 0 4px;
+  font-size: 1.35rem;
 }
 
 .hourly-temp,
 .daily-temp {
   display: block;
-  margin-bottom: 6px;
-  font-size: 1.2rem;
+  margin-bottom: 4px;
+  font-size: 0.98rem;
 }
 
 .hourly-extra,
 .daily-extra {
-  line-height: 1.55;
+  line-height: 1.35;
 }
 
 [hidden] {
@@ -331,11 +331,11 @@ h1 {
   }
 
   .hourly-list {
-    grid-auto-columns: 88px;
+    grid-auto-columns: 74px;
   }
 
   .daily-list {
-    grid-template-columns: repeat(5, 112px);
+    grid-template-columns: repeat(5, 82px);
     overflow-x: auto;
   }
 }
