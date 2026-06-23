@@ -453,7 +453,7 @@ h1 {
 .feedback-button {
   display: block;
   width: fit-content;
-  min-width: 44px;
+  min-width: 80px;
   height: 28px;
   border: 1px solid var(--line);
   border-radius: 999px;
