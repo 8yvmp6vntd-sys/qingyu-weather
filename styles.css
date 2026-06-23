@@ -292,29 +292,36 @@ h1 {
 }
 
 .hourly-list {
-  grid-auto-flow: column;
-  grid-auto-columns: 68px;
-  overflow-x: auto;
-  padding-bottom: 8px;
+  grid-auto-flow: row;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
+  overflow-y: auto;
+  max-height: 320px;
+  padding-right: 4px;
 }
 
 .daily-list {
-  grid-auto-flow: column;
-  grid-auto-columns: 68px;
-  overflow-x: auto;
-  padding-bottom: 8px;
+  grid-auto-flow: row;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 1fr;
+  overflow-y: auto;
+  max-height: 320px;
+  padding-right: 4px;
 }
 
-.hourly-list::-webkit-scrollbar {
-  height: 8px;
+.hourly-list::-webkit-scrollbar,
+.daily-list::-webkit-scrollbar {
+  width: 6px;
 }
 
-.hourly-list::-webkit-scrollbar-track {
+.hourly-list::-webkit-scrollbar-track,
+.daily-list::-webkit-scrollbar-track {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
 }
 
-.hourly-list::-webkit-scrollbar-thumb {
+.hourly-list::-webkit-scrollbar-thumb,
+.daily-list::-webkit-scrollbar-thumb {
   border-radius: 999px;
   background: rgba(121, 225, 255, 0.55);
 }
@@ -367,11 +374,11 @@ h1 {
   }
 
   .hourly-list {
-    grid-auto-columns: 64px;
+    max-height: 260px;
   }
 
   .daily-list {
-    grid-auto-columns: 64px;
+    max-height: 260px;
   }
 }
 
