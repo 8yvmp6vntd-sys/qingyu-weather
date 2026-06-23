@@ -253,18 +253,18 @@ h1 {
   background: linear-gradient(135deg, var(--accent), #e6fbff);
 }
 
-.row {
-  flex: 1;
+.forecast-grid > .row {
+  flex: 1 1 0;
   min-width: 0;
   padding: 0;
 }
 
-.row:first-child {
+.forecast-grid > .row:first-child {
   border-right: 1px solid var(--line);
   padding-right: 16px;
 }
 
-.row:last-child {
+.forecast-grid > .row:last-child {
   padding-left: 16px;
 }
 
