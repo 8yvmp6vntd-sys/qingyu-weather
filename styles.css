@@ -273,6 +273,12 @@ h1 {
   font-size: 1.25rem;
 }
 
+.forecast-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
 .hourly-list,
 .daily-list {
   display: grid;
@@ -359,6 +365,12 @@ h1 {
   .daily-list {
     grid-template-columns: repeat(7, 76px);
     overflow-x: auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .forecast-grid {
+    grid-template-columns: 1fr;
   }
 }
 
