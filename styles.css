@@ -254,9 +254,9 @@ h1 {
 }
 
 .row {
-  padding: 0;
+  flex: 1;
   min-width: 0;
-  overflow: hidden;
+  padding: 0;
 }
 
 .row:first-child {
@@ -280,8 +280,7 @@ h1 {
 }
 
 .forecast-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 16px;
 }
 
