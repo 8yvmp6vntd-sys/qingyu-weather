@@ -14,9 +14,9 @@
   <link rel="icon" sizes="192x192" href="./icon-192.png" />
   <link rel="icon" sizes="512x512" href="./icon-512.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-  <link rel="preload" href="./styles.css?v=15" as="style" />
-  <link rel="preload" href="./app.js?v=20" as="script" />
-  <link rel="stylesheet" href="./styles.css?v=15" />
+  <link rel="preload" href="./styles.css?v=16" as="style" />
+  <link rel="preload" href="./app.js?v=21" as="script" />
+  <link rel="stylesheet" href="./styles.css?v=16" />
 </head>
 <body>
   <div class="pull-indicator" id="pullIndicator">↓ 下拉刷新</div>
@@ -130,20 +130,26 @@
   <template id="hourlyTemplate">
     <article class="hourly-card">
       <p class="hourly-time"></p>
-      <div class="hourly-icon"></div>
-      <span class="hourly-info"><strong class="hourly-temp"></strong><span class="hourly-extra"></span></span>
+      <div class="hourly-row2">
+        <div class="hourly-icon"></div>
+        <strong class="hourly-temp"></strong>
+        <span class="hourly-extra"></span>
+      </div>
     </article>
   </template>
 
   <template id="dailyTemplate">
     <article class="daily-card">
       <p class="daily-date"></p>
-      <div class="daily-icon"></div>
-      <span class="daily-info"><strong class="daily-temp"></strong><span class="daily-extra"></span></span>
+      <div class="daily-row2">
+        <div class="daily-icon"></div>
+        <strong class="daily-temp"></strong>
+        <span class="daily-extra"></span>
+      </div>
     </article>
   </template>
 
   <script src="./city-data.js?v=2"></script>
-  <script src="./app.js?v=20" defer></script>
+  <script src="./app.js?v=21" defer></script>
 </body>
 </html>
