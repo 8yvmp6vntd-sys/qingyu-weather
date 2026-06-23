@@ -610,6 +610,7 @@ const closeFeedbackListDialog = document.querySelector("#closeFeedbackListDialog
 const feedbackExport = document.querySelector("#feedbackExport");
 
 const feedbackKey = "qingyu-weather-feedback";
+const githubRepo = "8yvmp6vntd-sys/qingyu-weather";
 
 function saveFeedback(text) {
   try {
@@ -669,6 +670,53 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+async function submitFeedbackToGitHub(text) {
+  try {
+    const body = `**反馈内容：**\n${text}\n\n**设备信息：**\n${navigator.userAgent}\n\n**时间：** ${new Date().toLocaleString("zh-CN")}`;
+    const response = await fetch(`https://api.github.com/repos/${githubRepo}/issues`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/vnd.github+json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: `用户反馈：${text.slice(0, 30)}${text.length > 30 ? "..." : ""}`,
+        body: body,
+        labels: ["feedback"],
+      }),
+    });
+    return response.ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function fetchGitHubIssues() {
+  try {
+    const response = await fetch(`https://api.github.com/repos/${githubRepo}/issues?labels=feedback&state=all&per_page=50`, {
+      headers: { "Accept": "application/vnd.github+json" },
+    });
+    if (!response.ok) return [];
+    const issues = await response.json();
+    return issues.map((issue) => ({
+      text: issue.body?.split("**反馈内容：**\\n")[1]?.split("\\n\\n**设备信息：**")[0] || issue.title,
+      time: issue.created_at,
+      ua: issue.body?.split("**设备信息：**\\n")[1]?.split("\\n\\n**时间：**")[0] || "",
+      url: issue.html_url,
+    }));
+  } catch (e) {
+    return [];
+  }
+}
+
+function showOnlineCount() {
+  const count = Math.floor(Math.random() * 50) + 10;
+  feedbackDialog.close();
+  window.setTimeout(() => {
+    alert(`当前在线人数：约 ${count} 人\\n（此为模拟数据，仅供参考）`);
+  }, 100);
+}
+
 feedbackButton.addEventListener("click", () => {
   feedbackInput.value = "";
   feedbackDialog.showModal();
@@ -678,25 +726,58 @@ closeFeedbackDialog.addEventListener("click", () => {
   feedbackDialog.close();
 });
 
-feedbackForm.addEventListener("submit", (event) => {
+feedbackForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const text = feedbackInput.value.trim();
   if (!text) return;
 
   if (text === "查看反馈") {
     feedbackDialog.close();
-    renderFeedbackList();
+    const issues = await fetchGitHubIssues();
+    if (issues.length > 0) {
+      feedbackList.innerHTML = "";
+      issues.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "feedback-item";
+        const time = new Date(item.time);
+        const timeStr = new Intl.DateTimeFormat("zh-CN", {
+          month: "numeric",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(time);
+        div.innerHTML = `
+          <p class="feedback-item-time">${timeStr}</p>
+          <p class="feedback-item-text">${escapeHtml(item.text)}</p>
+        `;
+        feedbackList.appendChild(div);
+      });
+    } else {
+      renderFeedbackList();
+    }
     feedbackListDialog.showModal();
     return;
   }
 
-  if (saveFeedback(text)) {
+  if (text === "在线人数") {
+    showOnlineCount();
+    return;
+  }
+
+  const saved = saveFeedback(text);
+  const githubOk = await submitFeedbackToGitHub(text);
+
+  if (saved || githubOk) {
     feedbackDialog.close();
     window.setTimeout(() => {
-      alert("反馈已提交，感谢你的建议！");
+      if (githubOk) {
+        alert("反馈已提交，感谢你的建议！");
+      } else {
+        alert("反馈已保存到本地，感谢你的建议！");
+      }
     }, 100);
   } else {
-    alert("保存失败，请重试。");
+    alert("提交失败，请检查网络后重试。");
   }
 });
 
@@ -704,15 +785,17 @@ closeFeedbackListDialog.addEventListener("click", () => {
   feedbackListDialog.close();
 });
 
-feedbackExport.addEventListener("click", () => {
-  const list = getFeedbackList();
-  if (list.length === 0) {
+feedbackExport.addEventListener("click", async () => {
+  const issues = await fetchGitHubIssues();
+  const localList = getFeedbackList();
+  const all = [...issues, ...localList];
+  if (all.length === 0) {
     alert("暂无反馈可导出");
     return;
   }
-  const data = JSON.stringify(list, null, 2);
+  const data = JSON.stringify(all, null, 2);
   navigator.clipboard.writeText(data).then(() => {
-    alert(`已复制 ${list.length} 条反馈到剪贴板`);
+    alert(`已复制 ${all.length} 条反馈到剪贴板`);
   }).catch(() => {
     alert(data);
   });
