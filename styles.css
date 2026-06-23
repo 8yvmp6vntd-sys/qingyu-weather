@@ -294,6 +294,8 @@ h1 {
   display: grid;
   gap: 8px;
   margin-top: 12px;
+  overflow-x: hidden;
+  touch-action: pan-y;
 }
 
 .hourly-list {
