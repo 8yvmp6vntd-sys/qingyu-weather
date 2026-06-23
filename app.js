@@ -559,6 +559,44 @@ setInterval(() => {
   loadWeather(saved.latitude, saved.longitude, saved.name, saved);
 }, 30 * 60 * 1000);
 
+/* ── 下拉刷新 ── */
+
+const appShell = document.querySelector(".app-shell");
+const pullIndicator = document.querySelector("#pullIndicator");
+
+let pullStartY = 0;
+let pulling = false;
+let pullThreshold = 80;
+
+document.addEventListener("touchstart", (e) => {
+  if (window.scrollY > 0) return;
+  pullStartY = e.touches[0].clientY;
+  pulling = true;
+}, { passive: true });
+
+document.addEventListener("touchmove", (e) => {
+  if (!pulling || window.scrollY > 0) return;
+  const dy = e.touches[0].clientY - pullStartY;
+  if (dy > 30) {
+    pullIndicator.classList.add("visible");
+    appShell.style.transform = `translateY(${Math.min(dy * 0.3, 60)}px)`;
+  }
+}, { passive: true });
+
+document.addEventListener("touchend", () => {
+  if (!pulling) return;
+  pulling = false;
+  pullIndicator.classList.remove("visible");
+  appShell.style.transform = "";
+
+  const dy = Math.abs(pullStartY);
+  if (dy > pullThreshold) {
+    const saved = getSavedLocation() || defaultLocation;
+    loadWeather(saved.latitude, saved.longitude, saved.name, saved);
+  }
+  pullStartY = 0;
+}, { passive: true });
+
 /* ── 反馈 ── */
 
 const feedbackButton = document.querySelector("#feedbackButton");
