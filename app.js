@@ -567,16 +567,32 @@ const pullIndicator = document.querySelector("#pullIndicator");
 let pullStartY = 0;
 let pulling = false;
 let pullThreshold = 160;
+let pullStartX = 0;
+
+function isInsideScrollable(el) {
+  while (el && el !== document.body) {
+    const overflow = getComputedStyle(el).overflowY;
+    if ((overflow === "auto" || overflow === "scroll") && el.scrollHeight > el.clientHeight) {
+      return true;
+    }
+    el = el.parentElement;
+  }
+  return false;
+}
 
 document.addEventListener("touchstart", (e) => {
   if (window.scrollY > 0) return;
+  if (isInsideScrollable(e.target)) return;
   pullStartY = e.touches[0].clientY;
+  pullStartX = e.touches[0].clientX;
   pulling = true;
 }, { passive: true });
 
 document.addEventListener("touchmove", (e) => {
   if (!pulling || window.scrollY > 0) return;
   const dy = e.touches[0].clientY - pullStartY;
+  const dx = Math.abs(e.touches[0].clientX - pullStartX);
+  if (dx > dy) { pulling = false; return; }
   if (dy > 30) {
     pullIndicator.classList.add("visible");
     appShell.style.transform = `translateY(${Math.min(dy * 0.3, 60)}px)`;
@@ -670,19 +686,20 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+const workerUrl = "https://qingyu-feedback.your-subdomain.workers.dev"; // ← 部署后替换为实际 Worker URL
+
 async function submitFeedbackToGitHub(text) {
   try {
-    const body = `**反馈内容：**\n${text}\n\n**设备信息：**\n${navigator.userAgent}\n\n**时间：** ${new Date().toLocaleString("zh-CN")}`;
-    const response = await fetch(`https://api.github.com/repos/${githubRepo}/issues`, {
+    if (workerUrl.includes("your-subdomain")) {
+      console.warn("Worker URL 未配置，反馈仅保存到本地");
+      return false;
+    }
+    const response = await fetch(workerUrl, {
       method: "POST",
-      headers: {
-        "Accept": "application/vnd.github+json",
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        title: `用户反馈：${text.slice(0, 30)}${text.length > 30 ? "..." : ""}`,
-        body: body,
-        labels: ["feedback"],
+        text,
+        ua: navigator.userAgent,
       }),
     });
     return response.ok;
