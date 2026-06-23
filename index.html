@@ -14,9 +14,9 @@
   <link rel="icon" sizes="192x192" href="./icon-192.png" />
   <link rel="icon" sizes="512x512" href="./icon-512.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-  <link rel="preload" href="./styles.css?v=9" as="style" />
-  <link rel="preload" href="./app.js?v=15" as="script" />
-  <link rel="stylesheet" href="./styles.css?v=9" />
+  <link rel="preload" href="./styles.css?v=10" as="style" />
+  <link rel="preload" href="./app.js?v=16" as="script" />
+  <link rel="stylesheet" href="./styles.css?v=10" />
 </head>
 <body>
   <main class="app-shell">
@@ -44,10 +44,11 @@
       </section>
     </section>
 
-    <button class="donate-button" id="donateButton" type="button">☕ 打赏创作者</button>
+    <div class="bottom-actions">
+      <button class="donate-button" id="donateButton" type="button">☕ 打赏创作者</button>
+      <button class="feedback-button" id="feedbackButton" type="button" title="问题反馈">💬</button>
+    </div>
   </main>
-
-  <button class="feedback-button" id="feedbackButton" type="button" title="问题反馈">💬</button>
 
   <dialog class="feedback-dialog" id="feedbackDialog">
     <form class="feedback-dialog-card" id="feedbackForm" method="dialog">
@@ -142,6 +143,6 @@
   </template>
 
   <script src="./city-data.js?v=2"></script>
-  <script src="./app.js?v=15" defer></script>
+  <script src="./app.js?v=16" defer></script>
 </body>
 </html>

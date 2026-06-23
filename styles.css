@@ -355,11 +355,18 @@ h1 {
 
 /* ── 打赏 ── */
 
+.bottom-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 .donate-button {
   display: block;
   width: fit-content;
   min-width: 96px;
-  margin: 10px auto 0;
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 5px 8px;
@@ -444,27 +451,23 @@ h1 {
 /* ── 反馈 ── */
 
 .feedback-button {
-  position: fixed;
-  right: 16px;
-  bottom: max(16px, env(safe-area-inset-bottom));
-  z-index: 100;
-  width: 44px;
-  height: 44px;
+  display: block;
+  width: fit-content;
+  min-width: 44px;
+  height: 28px;
   border: 1px solid var(--line);
-  border-radius: 50%;
-  padding: 0;
+  border-radius: 999px;
+  padding: 0 8px;
   color: var(--text);
-  font-size: 1.1rem;
-  background: rgba(13, 28, 50, 0.9);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(12px);
+  font-size: 0.66rem;
+  background: rgba(255, 255, 255, 0.08);
   cursor: pointer;
   transition: transform 180ms ease, background 180ms ease;
 }
 
 .feedback-button:hover {
-  transform: scale(1.08);
-  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .feedback-dialog {

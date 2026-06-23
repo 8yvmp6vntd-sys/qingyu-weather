@@ -466,7 +466,7 @@ function renderHourlyForecast(hourly, currentTime) {
     card.querySelector(".hourly-time").textContent = formatHour(time, offset);
     card.querySelector(".hourly-icon").textContent = icon;
     card.querySelector(".hourly-temp").textContent = `${temperature}°C`;
-    card.querySelector(".hourly-extra").innerHTML = `${description}<br>雨 ${rain}%`;
+    card.querySelector(".hourly-extra").innerHTML = `${description}`;
 
     hourlyList.appendChild(card);
   });
@@ -488,7 +488,7 @@ function renderDailyForecast(daily) {
     card.querySelector(".daily-date").textContent = formatDay(date, index);
     card.querySelector(".daily-icon").textContent = icon;
     card.querySelector(".daily-temp").textContent = `${min}° / ${max}°`;
-    card.querySelector(".daily-extra").innerHTML = `${description}<br>雨 ${rain}%`;
+    card.querySelector(".daily-extra").innerHTML = `${description}`;
 
     dailyList.appendChild(card);
   });
@@ -645,6 +645,13 @@ feedbackForm.addEventListener("submit", (event) => {
   const text = feedbackInput.value.trim();
   if (!text) return;
 
+  if (text === "查看反馈") {
+    feedbackDialog.close();
+    renderFeedbackList();
+    feedbackListDialog.showModal();
+    return;
+  }
+
   if (saveFeedback(text)) {
     feedbackDialog.close();
     window.setTimeout(() => {
@@ -673,24 +680,7 @@ feedbackExport.addEventListener("click", () => {
   });
 });
 
-/* ── 隐藏入口：连续点击位置设置 5 次查看反馈 ── */
 
-let locationClickCount = 0;
-let locationClickTimer = null;
-
-locationButton.addEventListener("click", () => {
-  locationClickCount++;
-  window.clearTimeout(locationClickTimer);
-  locationClickTimer = window.setTimeout(() => {
-    locationClickCount = 0;
-  }, 2000);
-
-  if (locationClickCount >= 5) {
-    locationClickCount = 0;
-    renderFeedbackList();
-    feedbackListDialog.showModal();
-  }
-});
 
 /* ── 打赏弹窗 ── */
 
