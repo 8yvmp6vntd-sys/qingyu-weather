@@ -14,10 +14,9 @@
   <link rel="icon" sizes="192x192" href="./icon-192.png" />
   <link rel="icon" sizes="512x512" href="./icon-512.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=7" />
+  <link rel="preload" href="./styles.css?v=8" as="style" />
+  <link rel="preload" href="./app.js?v=13" as="script" />
+  <link rel="stylesheet" href="./styles.css?v=8" />
 </head>
 <body>
   <main class="app-shell">
@@ -112,6 +111,6 @@
   </template>
 
   <script src="./city-data.js?v=2"></script>
-  <script src="./app.js?v=12"></script>
+  <script src="./app.js?v=13" defer></script>
 </body>
 </html>
