@@ -566,7 +566,7 @@ const pullIndicator = document.querySelector("#pullIndicator");
 
 let pullStartY = 0;
 let pulling = false;
-let pullThreshold = 160;
+let pullThreshold = 80;
 
 document.addEventListener("touchstart", (e) => {
   if (window.scrollY > 0) return;
