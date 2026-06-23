@@ -341,6 +341,11 @@ h1 {
   text-align: center;
 }
 
+.hourly-list .hourly-card,
+.daily-list .daily-card {
+  width: 100%;
+}
+
 .hourly-time,
 .hourly-extra,
 .daily-date,
