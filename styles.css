@@ -34,9 +34,14 @@ input {
 
 .app-shell {
   width: min(960px, calc(100% - 28px));
+  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0 auto;
   padding: max(28px, env(safe-area-inset-top)) 0 max(28px, env(safe-area-inset-bottom));
   transition: transform 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .pull-indicator {
@@ -294,9 +299,9 @@ h1 {
 .hourly-list {
   grid-auto-flow: row;
   grid-auto-columns: 1fr;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   overflow-y: auto;
-  max-height: 320px;
+  max-height: 420px;
   padding-right: 4px;
 }
 
@@ -305,7 +310,7 @@ h1 {
   grid-auto-columns: 1fr;
   grid-template-columns: 1fr;
   overflow-y: auto;
-  max-height: 320px;
+  max-height: 420px;
   padding-right: 4px;
 }
 
@@ -374,11 +379,11 @@ h1 {
   }
 
   .hourly-list {
-    max-height: 260px;
+    max-height: 360px;
   }
 
   .daily-list {
-    max-height: 260px;
+    max-height: 360px;
   }
 }
 
