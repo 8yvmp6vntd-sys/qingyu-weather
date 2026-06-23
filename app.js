@@ -487,7 +487,7 @@ function renderDailyForecast(daily) {
 
     card.querySelector(".daily-date").textContent = formatDay(date, index);
     card.querySelector(".daily-icon").textContent = icon;
-    card.querySelector(".daily-temp").textContent = `${min}° / ${max}°`;
+    card.querySelector(".daily-temp").textContent = `${min}°C-${max}°C`;
     card.querySelector(".daily-extra").innerHTML = `${description}`;
 
     dailyList.appendChild(card);
