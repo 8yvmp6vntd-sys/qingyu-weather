@@ -255,6 +255,8 @@ h1 {
 
 .row {
   padding: 0;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .row:first-child {
