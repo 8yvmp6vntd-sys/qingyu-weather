@@ -12,34 +12,34 @@ const hourlyTemplate = document.querySelector("#hourlyTemplate");
 const dailyTemplate = document.querySelector("#dailyTemplate");
 
 const weatherCodeMap = {
-  0: ["晴朗", "☀️"],
-  1: ["大部晴朗", "🌤️"],
-  2: ["局部多云", "⛅"],
-  3: ["阴天", "☁️"],
-  45: ["有雾", "🌫️"],
-  48: ["雾凇", "🌫️"],
-  51: ["小毛毛雨", "🌦️"],
-  53: ["中等毛毛雨", "🌦️"],
-  55: ["大毛毛雨", "🌧️"],
-  56: ["冻毛毛雨", "🌧️"],
-  57: ["强冻毛毛雨", "🌧️"],
+  0: ["晴", "☀️"],
+  1: ["多云", "🌤️"],
+  2: ["多云", "⛅"],
+  3: ["阴", "☁️"],
+  45: ["雾", "🌫️"],
+  48: ["雾", "🌫️"],
+  51: ["小雨", "🌦️"],
+  53: ["小雨", "🌦️"],
+  55: ["中雨", "🌧️"],
+  56: ["冻雨", "🌧️"],
+  57: ["冻雨", "🌧️"],
   61: ["小雨", "🌧️"],
   63: ["中雨", "🌧️"],
   65: ["大雨", "🌧️"],
   66: ["冻雨", "🌧️"],
-  67: ["强冻雨", "🌧️"],
+  67: ["冻雨", "🌧️"],
   71: ["小雪", "🌨️"],
   73: ["中雪", "🌨️"],
   75: ["大雪", "❄️"],
-  77: ["雪粒", "❄️"],
+  77: ["雪", "❄️"],
   80: ["阵雨", "🌦️"],
-  81: ["强阵雨", "🌧️"],
+  81: ["中雨", "🌧️"],
   82: ["暴雨", "⛈️"],
   85: ["阵雪", "🌨️"],
-  86: ["强阵雪", "❄️"],
+  86: ["大雪", "❄️"],
   95: ["雷暴", "⛈️"],
-  96: ["雷暴伴冰雹", "⛈️"],
-  99: ["强雷暴伴冰雹", "⛈️"],
+  96: ["雷暴", "⛈️"],
+  99: ["雷暴", "⛈️"],
 };
 
 const defaultLocation = {
@@ -383,7 +383,7 @@ async function loadWeather(latitude, longitude, displayName, location = {}) {
       hourly: "temperature_2m,weather_code,precipitation_probability,wind_speed_10m",
       daily: "weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max",
       timezone: "auto",
-      forecast_days: "6",
+      forecast_days: "8",
     });
 
     const response = await fetch(url);
@@ -466,7 +466,7 @@ function renderHourlyForecast(hourly, currentTime) {
     card.querySelector(".hourly-time").textContent = formatHour(time, offset);
     card.querySelector(".hourly-icon").textContent = icon;
     card.querySelector(".hourly-temp").textContent = `${temperature}°C`;
-    card.querySelector(".hourly-extra").innerHTML = `${description}<br>雨 ${rain}% · 风 ${wind}`;
+    card.querySelector(".hourly-extra").innerHTML = `${description}<br>雨 ${rain}%`;
 
     hourlyList.appendChild(card);
   });
@@ -477,7 +477,7 @@ function renderHourlyForecast(hourly, currentTime) {
 function renderDailyForecast(daily) {
   dailyList.innerHTML = "";
 
-  daily.time.slice(1, 6).forEach((date, offset) => {
+  daily.time.slice(1, 8).forEach((date, offset) => {
     const index = offset + 1;
     const card = dailyTemplate.content.cloneNode(true);
     const [description, icon] = getWeatherInfo(daily.weather_code[index]);
@@ -551,6 +551,13 @@ if ("serviceWorker" in navigator) {
 
 const initialLocation = getSavedLocation() || defaultLocation;
 loadWeather(initialLocation.latitude, initialLocation.longitude, initialLocation.name, initialLocation);
+
+/* ── 每 30 分钟自动刷新天气 ── */
+
+setInterval(() => {
+  const saved = getSavedLocation() || defaultLocation;
+  loadWeather(saved.latitude, saved.longitude, saved.name, saved);
+}, 30 * 60 * 1000);
 
 /* ── 打赏弹窗 ── */
 

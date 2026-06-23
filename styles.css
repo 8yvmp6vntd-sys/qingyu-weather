@@ -266,7 +266,7 @@ h1 {
 }
 
 .daily-list {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .hourly-list::-webkit-scrollbar {
@@ -335,7 +335,7 @@ h1 {
   }
 
   .daily-list {
-    grid-template-columns: repeat(5, 82px);
+    grid-template-columns: repeat(7, 76px);
     overflow-x: auto;
   }
 }
