@@ -333,12 +333,14 @@ h1 {
 
 .hourly-card,
 .daily-card {
-  min-height: 108px;
-  padding: 8px 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--card);
-  text-align: center;
 }
 
 .hourly-list .hourly-card,
@@ -347,30 +349,34 @@ h1 {
 }
 
 .hourly-time,
-.hourly-extra,
-.daily-date,
-.daily-extra {
+.daily-date {
   margin-bottom: 0;
   color: var(--muted);
   font-size: 0.74rem;
+  min-width: 56px;
 }
 
 .hourly-icon,
 .daily-icon {
-  margin: 6px 0 4px;
   font-size: 1.35rem;
+  flex-shrink: 0;
 }
 
 .hourly-temp,
 .daily-temp {
-  display: block;
-  margin-bottom: 4px;
+  margin-bottom: 0;
   font-size: 0.98rem;
+  min-width: 48px;
+  text-align: right;
 }
 
 .hourly-extra,
 .daily-extra {
-  line-height: 1.35;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.74rem;
+  min-width: 40px;
+  text-align: right;
 }
 
 [hidden] {
