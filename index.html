@@ -14,9 +14,9 @@
   <link rel="icon" sizes="192x192" href="./icon-192.png" />
   <link rel="icon" sizes="512x512" href="./icon-512.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-  <link rel="preload" href="./styles.css?v=8" as="style" />
-  <link rel="preload" href="./app.js?v=13" as="script" />
-  <link rel="stylesheet" href="./styles.css?v=8" />
+  <link rel="preload" href="./styles.css?v=9" as="style" />
+  <link rel="preload" href="./app.js?v=15" as="script" />
+  <link rel="stylesheet" href="./styles.css?v=9" />
 </head>
 <body>
   <main class="app-shell">
@@ -46,6 +46,37 @@
 
     <button class="donate-button" id="donateButton" type="button">☕ 打赏创作者</button>
   </main>
+
+  <button class="feedback-button" id="feedbackButton" type="button" title="问题反馈">💬</button>
+
+  <dialog class="feedback-dialog" id="feedbackDialog">
+    <form class="feedback-dialog-card" id="feedbackForm" method="dialog">
+      <div class="feedback-dialog-header">
+        <h3>💬 问题反馈</h3>
+        <button class="dialog-close" id="closeFeedbackDialog" type="button" aria-label="关闭">×</button>
+      </div>
+      <p class="feedback-dialog-desc">遇到问题或有建议？请告诉我们，我们会尽快改进。</p>
+      <textarea
+        class="feedback-input"
+        id="feedbackInput"
+        placeholder="请描述你遇到的问题或建议..."
+        rows="4"
+        required
+      ></textarea>
+      <button class="feedback-submit" type="submit">提交反馈</button>
+    </form>
+  </dialog>
+
+  <dialog class="feedback-dialog" id="feedbackListDialog">
+    <form class="feedback-dialog-card" method="dialog">
+      <div class="feedback-dialog-header">
+        <h3>📋 反馈列表</h3>
+        <button class="dialog-close" id="closeFeedbackListDialog" type="button" aria-label="关闭">×</button>
+      </div>
+      <div class="feedback-list" id="feedbackList"></div>
+      <button class="feedback-export" id="feedbackExport" type="button">导出反馈</button>
+    </form>
+  </dialog>
 
   <dialog class="donate-dialog" id="donateDialog">
     <form class="donate-dialog-card" method="dialog">
@@ -111,6 +142,6 @@
   </template>
 
   <script src="./city-data.js?v=2"></script>
-  <script src="./app.js?v=14" defer></script>
+  <script src="./app.js?v=15" defer></script>
 </body>
 </html>

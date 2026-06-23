@@ -559,6 +559,139 @@ setInterval(() => {
   loadWeather(saved.latitude, saved.longitude, saved.name, saved);
 }, 30 * 60 * 1000);
 
+/* ── 反馈 ── */
+
+const feedbackButton = document.querySelector("#feedbackButton");
+const feedbackDialog = document.querySelector("#feedbackDialog");
+const feedbackForm = document.querySelector("#feedbackForm");
+const feedbackInput = document.querySelector("#feedbackInput");
+const closeFeedbackDialog = document.querySelector("#closeFeedbackDialog");
+const feedbackListDialog = document.querySelector("#feedbackListDialog");
+const feedbackList = document.querySelector("#feedbackList");
+const closeFeedbackListDialog = document.querySelector("#closeFeedbackListDialog");
+const feedbackExport = document.querySelector("#feedbackExport");
+
+const feedbackKey = "qingyu-weather-feedback";
+
+function saveFeedback(text) {
+  try {
+    const list = JSON.parse(localStorage.getItem(feedbackKey) || "[]");
+    list.push({
+      text,
+      time: new Date().toISOString(),
+      ua: navigator.userAgent.slice(0, 120),
+    });
+    localStorage.setItem(feedbackKey, JSON.stringify(list));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function getFeedbackList() {
+  try {
+    return JSON.parse(localStorage.getItem(feedbackKey) || "[]");
+  } catch (e) {
+    return [];
+  }
+}
+
+function renderFeedbackList() {
+  const list = getFeedbackList();
+  feedbackList.innerHTML = "";
+
+  if (list.length === 0) {
+    feedbackList.innerHTML = '<p class="feedback-empty">暂无反馈</p>';
+    return;
+  }
+
+  list.slice().reverse().forEach((item) => {
+    const div = document.createElement("div");
+    div.className = "feedback-item";
+
+    const time = new Date(item.time);
+    const timeStr = new Intl.DateTimeFormat("zh-CN", {
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(time);
+
+    div.innerHTML = `
+      <p class="feedback-item-time">${timeStr}</p>
+      <p class="feedback-item-text">${escapeHtml(item.text)}</p>
+    `;
+    feedbackList.appendChild(div);
+  });
+}
+
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+feedbackButton.addEventListener("click", () => {
+  feedbackInput.value = "";
+  feedbackDialog.showModal();
+});
+
+closeFeedbackDialog.addEventListener("click", () => {
+  feedbackDialog.close();
+});
+
+feedbackForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const text = feedbackInput.value.trim();
+  if (!text) return;
+
+  if (saveFeedback(text)) {
+    feedbackDialog.close();
+    window.setTimeout(() => {
+      alert("反馈已提交，感谢你的建议！");
+    }, 100);
+  } else {
+    alert("保存失败，请重试。");
+  }
+});
+
+closeFeedbackListDialog.addEventListener("click", () => {
+  feedbackListDialog.close();
+});
+
+feedbackExport.addEventListener("click", () => {
+  const list = getFeedbackList();
+  if (list.length === 0) {
+    alert("暂无反馈可导出");
+    return;
+  }
+  const data = JSON.stringify(list, null, 2);
+  navigator.clipboard.writeText(data).then(() => {
+    alert(`已复制 ${list.length} 条反馈到剪贴板`);
+  }).catch(() => {
+    alert(data);
+  });
+});
+
+/* ── 隐藏入口：连续点击位置设置 5 次查看反馈 ── */
+
+let locationClickCount = 0;
+let locationClickTimer = null;
+
+locationButton.addEventListener("click", () => {
+  locationClickCount++;
+  window.clearTimeout(locationClickTimer);
+  locationClickTimer = window.setTimeout(() => {
+    locationClickCount = 0;
+  }, 2000);
+
+  if (locationClickCount >= 5) {
+    locationClickCount = 0;
+    renderFeedbackList();
+    feedbackListDialog.showModal();
+  }
+});
+
 /* ── 打赏弹窗 ── */
 
 const donateButton = document.querySelector("#donateButton");
