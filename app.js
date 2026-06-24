@@ -842,6 +842,10 @@ const closeThemeDialog = document.querySelector("#closeThemeDialog");
 const themeOptions = document.querySelector("#themeOptions");
 const themePaySection = document.querySelector("#themePaySection");
 const themePayQr = document.querySelector("#themePayQr");
+const themePayTip = document.querySelector("#theme-pay-tip");
+
+// Cloudflare Worker URL - 部署 Worker 后替换为实际地址
+const PAY_WORKER_URL = "https://qingyu-weather-pay.your-subdomain.workers.dev";
 
 const themeMap = {
   default: {
@@ -897,9 +901,83 @@ if (savedActiveTheme && themeMap[savedActiveTheme]) {
   applyTheme(savedActiveTheme);
 }
 
+// Check if returning from payment
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get("paid") === "1" && urlParams.get("theme")) {
+  const paidTheme = urlParams.get("theme");
+  const tradeOrderId = urlParams.get("trade_order_id") || localStorage.getItem("qingyu-pending-order");
+
+  if (tradeOrderId && paidTheme) {
+    // Verify payment with Worker
+    fetch(`${PAY_WORKER_URL}/verify?trade_order_id=${encodeURIComponent(tradeOrderId)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.paid) {
+          const unlocked = getUnlockedThemes();
+          if (!unlocked.includes(paidTheme)) {
+            unlocked.push(paidTheme);
+            saveUnlockedThemes(unlocked);
+          }
+          applyTheme(paidTheme);
+        }
+        localStorage.removeItem("qingyu-pending-order");
+        // Clean URL
+        window.history.replaceState({}, "", window.location.pathname);
+      })
+      .catch(() => {
+        localStorage.removeItem("qingyu-pending-order");
+        window.history.replaceState({}, "", window.location.pathname);
+      });
+  }
+}
+
+let pollTimer = null;
+
+function stopPolling() {
+  if (pollTimer) {
+    clearInterval(pollTimer);
+    pollTimer = null;
+  }
+}
+
+function pollPaymentStatus(tradeOrderId, themeName) {
+  stopPolling();
+  let attempts = 0;
+  const maxAttempts = 60; // 5 minutes (every 5 seconds)
+
+  pollTimer = setInterval(() => {
+    attempts++;
+    if (attempts > maxAttempts) {
+      stopPolling();
+      if (themePayTip) themePayTip.textContent = "二维码已过期，请重新选择";
+      return;
+    }
+
+    fetch(`${PAY_WORKER_URL}/query?trade_order_id=${encodeURIComponent(tradeOrderId)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.errcode === 0 && data.data && data.data.status === "OD") {
+          stopPolling();
+          // Payment successful
+          const unlocked = getUnlockedThemes();
+          if (!unlocked.includes(themeName)) {
+            unlocked.push(themeName);
+            saveUnlockedThemes(unlocked);
+          }
+          applyTheme(themeName);
+          themePaySection.hidden = true;
+          if (themePayTip) themePayTip.textContent = "支付成功！主题已解锁";
+          localStorage.removeItem("qingyu-pending-order");
+        }
+      })
+      .catch(() => {});
+  }, 5000);
+}
+
 themeButton.addEventListener("click", () => {
   themeDialog.showModal();
   themePaySection.hidden = true;
+  stopPolling();
   // Mark unlocked themes
   const unlocked = getUnlockedThemes();
   themeOptions.querySelectorAll(".theme-option").forEach((btn) => {
@@ -911,9 +989,10 @@ themeButton.addEventListener("click", () => {
 
 closeThemeDialog.addEventListener("click", () => {
   themeDialog.close();
+  stopPolling();
 });
 
-themeOptions.addEventListener("click", (e) => {
+themeOptions.addEventListener("click", async (e) => {
   const btn = e.target.closest(".theme-option");
   if (!btn) return;
   const name = btn.dataset.theme;
@@ -924,8 +1003,35 @@ themeOptions.addEventListener("click", (e) => {
     return;
   }
 
-  // Need to pay
-  themePaySection.hidden = false;
-  themePayQr.src = "./donate-qr.jpeg";
-  themePayQr.alt = "支付宝支付二维码 ¥1";
+  // Need to pay - create order via Worker
+  try {
+    if (themePayTip) themePayTip.textContent = "正在创建订单...";
+    themePaySection.hidden = false;
+
+    const resp = await fetch(`${PAY_WORKER_URL}/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ theme: name, total_fee: "1.00" }),
+    });
+
+    const data = await resp.json();
+
+    if (data.errcode !== 0) {
+      if (themePayTip) themePayTip.textContent = `创建订单失败: ${data.errmsg}`;
+      return;
+    }
+
+    // Show QR code from xunhupay
+    themePayQr.src = data.url_qrcode;
+    themePayQr.alt = "支付宝支付二维码 ¥1";
+    if (themePayTip) themePayTip.textContent = "请使用支付宝扫描二维码支付 ¥1，支付完成后自动解锁";
+
+    // Save pending order for return URL verification
+    localStorage.setItem("qingyu-pending-order", data.trade_order_id);
+
+    // Start polling payment status
+    pollPaymentStatus(data.trade_order_id, name);
+  } catch (err) {
+    if (themePayTip) themePayTip.textContent = `网络错误，请稍后重试`;
+  }
 });
