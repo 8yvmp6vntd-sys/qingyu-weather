@@ -833,3 +833,99 @@ donateButton.addEventListener("click", () => {
 closeDonateDialog.addEventListener("click", () => {
   donateDialog.close();
 });
+
+/* ── 更换背景颜色 ── */
+
+const themeButton = document.querySelector("#themeButton");
+const themeDialog = document.querySelector("#themeDialog");
+const closeThemeDialog = document.querySelector("#closeThemeDialog");
+const themeOptions = document.querySelector("#themeOptions");
+const themePaySection = document.querySelector("#themePaySection");
+const themePayQr = document.querySelector("#themePayQr");
+
+const themeMap = {
+  default: {
+    bg: "radial-gradient(circle at 18% 12%, rgba(121, 225, 255, 0.28), transparent 28rem), radial-gradient(circle at 82% 18%, rgba(180, 140, 255, 0.22), transparent 26rem), linear-gradient(135deg, #07111f 0%, #102544 52%, #14213d 100%)",
+  },
+  sunset: {
+    bg: "radial-gradient(circle at 18% 12%, rgba(255, 121, 121, 0.28), transparent 28rem), radial-gradient(circle at 82% 18%, rgba(180, 100, 200, 0.22), transparent 26rem), linear-gradient(135deg, #1a0a0a 0%, #3d1421 52%, #4a1942 100%)",
+  },
+  forest: {
+    bg: "radial-gradient(circle at 18% 12%, rgba(121, 255, 150, 0.28), transparent 28rem), radial-gradient(circle at 82% 18%, rgba(100, 200, 140, 0.22), transparent 26rem), linear-gradient(135deg, #0a1a0f 0%, #143d28 52%, #1a4a32 100%)",
+  },
+  ocean: {
+    bg: "radial-gradient(circle at 18% 12%, rgba(100, 180, 255, 0.28), transparent 28rem), radial-gradient(circle at 82% 18%, rgba(80, 140, 220, 0.22), transparent 26rem), linear-gradient(135deg, #0a0f1a 0%, #0d2847 52%, #0e3a5e 100%)",
+  },
+  aurora: {
+    bg: "radial-gradient(circle at 18% 12%, rgba(100, 255, 180, 0.28), transparent 28rem), radial-gradient(circle at 82% 18%, rgba(180, 255, 100, 0.22), transparent 26rem), linear-gradient(135deg, #0f1a0a 0%, #1a3d14 52%, #2d4a1a 100%)",
+  },
+  rose: {
+    bg: "radial-gradient(circle at 18% 12%, rgba(255, 150, 180, 0.28), transparent 28rem), radial-gradient(circle at 82% 18%, rgba(220, 100, 160, 0.22), transparent 26rem), linear-gradient(135deg, #1a0a14 0%, #3d1428 52%, #4a1938 100%)",
+  },
+};
+
+const themeStorageKey = "qingyu-theme";
+
+function getUnlockedThemes() {
+  try {
+    const raw = localStorage.getItem(themeStorageKey);
+    return raw ? JSON.parse(raw) : ["default"];
+  } catch {
+    return ["default"];
+  }
+}
+
+function saveUnlockedThemes(themes) {
+  try {
+    localStorage.setItem(themeStorageKey, JSON.stringify(themes));
+  } catch {}
+}
+
+function applyTheme(name) {
+  const theme = themeMap[name];
+  if (!theme) return;
+  document.body.style.background = theme.bg;
+  localStorage.setItem("qingyu-active-theme", name);
+  themeOptions.querySelectorAll(".theme-option").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.theme === name);
+  });
+}
+
+// Restore saved theme on load
+const savedActiveTheme = localStorage.getItem("qingyu-active-theme");
+if (savedActiveTheme && themeMap[savedActiveTheme]) {
+  applyTheme(savedActiveTheme);
+}
+
+themeButton.addEventListener("click", () => {
+  themeDialog.showModal();
+  themePaySection.hidden = true;
+  // Mark unlocked themes
+  const unlocked = getUnlockedThemes();
+  themeOptions.querySelectorAll(".theme-option").forEach((btn) => {
+    const name = btn.dataset.theme;
+    btn.classList.toggle("active", name === savedActiveTheme);
+    btn.style.opacity = unlocked.includes(name) ? "1" : "0.55";
+  });
+});
+
+closeThemeDialog.addEventListener("click", () => {
+  themeDialog.close();
+});
+
+themeOptions.addEventListener("click", (e) => {
+  const btn = e.target.closest(".theme-option");
+  if (!btn) return;
+  const name = btn.dataset.theme;
+  const unlocked = getUnlockedThemes();
+
+  if (unlocked.includes(name)) {
+    applyTheme(name);
+    return;
+  }
+
+  // Need to pay
+  themePaySection.hidden = false;
+  themePayQr.src = "./donate-qr.jpeg";
+  themePayQr.alt = "支付宝支付二维码 ¥1";
+});

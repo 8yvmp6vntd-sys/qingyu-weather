@@ -14,9 +14,9 @@
   <link rel="icon" sizes="192x192" href="./icon-192.png" />
   <link rel="icon" sizes="512x512" href="./icon-512.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-  <link rel="preload" href="./styles.css?v=17" as="style" />
-  <link rel="preload" href="./app.js?v=22" as="script" />
-  <link rel="stylesheet" href="./styles.css?v=17" />
+  <link rel="preload" href="./styles.css?v=18" as="style" />
+  <link rel="preload" href="./app.js?v=23" as="script" />
+  <link rel="stylesheet" href="./styles.css?v=18" />
 </head>
 <body>
   <div class="pull-indicator" id="pullIndicator">↓ 下拉刷新</div>
@@ -48,6 +48,7 @@
     </section>
 
     <div class="bottom-actions">
+      <button class="theme-button" id="themeButton" type="button">🎨 更换背景</button>
       <button class="donate-button" id="donateButton" type="button">☕ 打赏创作者</button>
       <button class="feedback-button" id="feedbackButton" type="button">💬 问题反馈</button>
     </div>
@@ -93,6 +94,47 @@
         <img class="donate-qr" src="./donate-qr.jpeg" alt="微信收款二维码" />
       </div>
       <p class="donate-tip">请截图保存到相册，然后用微信扫一扫识别😊</p>
+    </form>
+  </dialog>
+
+  <dialog class="theme-dialog" id="themeDialog">
+    <form class="theme-dialog-card" method="dialog">
+      <div class="theme-dialog-header">
+        <h3>🎨 更换背景颜色</h3>
+        <button class="dialog-close" id="closeThemeDialog" type="button" aria-label="关闭">×</button>
+      </div>
+      <p class="theme-dialog-desc">选择你喜欢的背景主题（需支付 ¥1 解锁）</p>
+      <div class="theme-options" id="themeOptions">
+        <button type="button" class="theme-option" data-theme="default">
+          <span class="theme-preview" style="background: linear-gradient(135deg, #07111f, #102544, #14213d)"></span>
+          <span class="theme-name">深空蓝（默认）</span>
+        </button>
+        <button type="button" class="theme-option" data-theme="sunset">
+          <span class="theme-preview" style="background: linear-gradient(135deg, #1a0a0a, #3d1421, #4a1942)"></span>
+          <span class="theme-name">落日紫</span>
+        </button>
+        <button type="button" class="theme-option" data-theme="forest">
+          <span class="theme-preview" style="background: linear-gradient(135deg, #0a1a0f, #143d28, #1a4a32)"></span>
+          <span class="theme-name">森林绿</span>
+        </button>
+        <button type="button" class="theme-option" data-theme="ocean">
+          <span class="theme-preview" style="background: linear-gradient(135deg, #0a0f1a, #0d2847, #0e3a5e)"></span>
+          <span class="theme-name">深海蓝</span>
+        </button>
+        <button type="button" class="theme-option" data-theme="aurora">
+          <span class="theme-preview" style="background: linear-gradient(135deg, #0f1a0a, #1a3d14, #2d4a1a)"></span>
+          <span class="theme-name">极光绿</span>
+        </button>
+        <button type="button" class="theme-option" data-theme="rose">
+          <span class="theme-preview" style="background: linear-gradient(135deg, #1a0a14, #3d1428, #4a1938)"></span>
+          <span class="theme-name">玫瑰粉</span>
+        </button>
+      </div>
+      <div class="theme-pay-section" id="themePaySection" hidden>
+        <p class="theme-pay-info">请使用支付宝扫描下方二维码支付 ¥1</p>
+        <img class="theme-pay-qr" id="themePayQr" src="" alt="支付二维码" />
+        <p class="theme-pay-tip">支付完成后自动解锁</p>
+      </div>
     </form>
   </dialog>
 
@@ -150,6 +192,6 @@
   </template>
 
   <script src="./city-data.js?v=2"></script>
-  <script src="./app.js?v=22" defer></script>
+  <script src="./app.js?v=23" defer></script>
 </body>
 </html>
