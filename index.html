@@ -14,9 +14,9 @@
   <link rel="icon" sizes="192x192" href="./icon-192.png" />
   <link rel="icon" sizes="512x512" href="./icon-512.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-  <link rel="preload" href="./styles.css?v=19" as="style" />
-  <link rel="preload" href="./app.js?v=24" as="script" />
-  <link rel="stylesheet" href="./styles.css?v=19" />
+  <link rel="preload" href="./styles.css?v=20" as="style" />
+  <link rel="preload" href="./app.js?v=25" as="script" />
+  <link rel="stylesheet" href="./styles.css?v=20" />
 </head>
 <body>
   <div class="pull-indicator" id="pullIndicator">↓ 下拉刷新</div>
@@ -131,9 +131,13 @@
         </button>
       </div>
       <div class="theme-pay-section" id="themePaySection" hidden>
-        <p class="theme-pay-info">请使用支付宝扫描下方二维码支付 ¥1</p>
-        <img class="theme-pay-qr" id="themePayQr" src="" alt="支付二维码" />
-        <p class="theme-pay-tip">支付完成后自动解锁</p>
+        <p class="theme-pay-info">请使用支付宝扫描下方二维码支付 <strong>¥1</strong></p>
+        <img class="theme-pay-qr" id="themePayQr" src="./pay-qr.jpeg" alt="支付宝收款码" />
+        <p class="theme-pay-tip" id="theme-pay-tip">支付后，请在支付宝账单中找到交易号，输入后6位</p>
+        <div class="theme-code-row">
+          <input class="theme-code-input" id="themeCodeInput" type="text" maxlength="6" placeholder="输入交易号后6位" inputmode="numeric" pattern="\d{6}" autocomplete="off" />
+          <button class="theme-code-btn" id="themeCodeBtn" type="button">确认解锁</button>
+        </div>
       </div>
     </form>
   </dialog>
@@ -192,6 +196,6 @@
   </template>
 
   <script src="./city-data.js?v=2"></script>
-  <script src="./app.js?v=24" defer></script>
+  <script src="./app.js?v=25" defer></script>
 </body>
 </html>

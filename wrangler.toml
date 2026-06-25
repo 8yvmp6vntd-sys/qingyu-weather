@@ -1,18 +1,10 @@
 name = "qingyu-weather-pay"
-main = "payment-worker.js"
+main = "worker/payment-worker.js"
 compatibility_date = "2024-01-01"
 
-# KV namespace for storing payment records
+# KV namespace for storing payment verification codes
 # Run: wrangler kv:namespace create "PAID_THEMES"
 # Then replace the id below with the returned id
 [[kv_namespaces]]
 binding = "PAID_THEMES"
 id = "YOUR_KV_NAMESPACE_ID"
-
-# Environment variables - set these in Cloudflare Dashboard or via wrangler
-[vars]
-# XUNHU_APPID = "your_appid"
-# XUNHU_SECRET = "your_secret"
-# XUNHU_GATEWAY = "https://api.xunhupay.com"
-# SITE_URL = "https://8yvmp6vntd-sys.github.io/qingyu-weather/"
-# WORKER_URL = "https://qingyu-weather-pay.your-subdomain.workers.dev"

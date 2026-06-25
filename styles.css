@@ -574,6 +574,58 @@ h1 {
   margin: 0;
   font-size: 0.68rem;
   color: var(--muted);
+  text-align: center;
+}
+
+.theme-code-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.theme-code-input {
+  flex: 1;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 0.88rem;
+  background: rgba(255, 255, 255, 0.08);
+  outline: none;
+  letter-spacing: 0.15em;
+  text-align: center;
+}
+
+.theme-code-input::placeholder {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0;
+}
+
+.theme-code-input:focus {
+  border-color: var(--accent);
+}
+
+.theme-code-btn {
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 8px 16px;
+  color: var(--bg);
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 180ms ease;
+}
+
+.theme-code-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.theme-code-btn:hover:not(:disabled) {
+  opacity: 0.85;
 }
 
 .donate-dialog {
