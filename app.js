@@ -846,10 +846,9 @@ const themePayTip = document.querySelector("#theme-pay-tip");
 const themeCodeInput = document.querySelector("#themeCodeInput");
 const themeCodeBtn = document.querySelector("#themeCodeBtn");
 
-// Cloudflare Worker URL - 部署 Worker 后替换为实际地址
-const PAY_WORKER_URL = "https://qingyu-weather-pay.your-subdomain.workers.dev";
-
 let pendingTheme = null;
+
+const CODE_KEY = "qingyu-used-codes";
 
 const themeMap = {
   default: {
@@ -942,7 +941,7 @@ themeOptions.addEventListener("click", (e) => {
   if (themePayTip) themePayTip.textContent = "支付后，请在支付宝账单中找到交易号，输入后6位";
 });
 
-themeCodeBtn.addEventListener("click", async () => {
+themeCodeBtn.addEventListener("click", () => {
   const code = themeCodeInput.value.trim();
   if (!code || code.length !== 6 || !/^\d{6}$/.test(code)) {
     if (themePayTip) themePayTip.textContent = "请输入正确的6位数字验证码";
@@ -950,28 +949,14 @@ themeCodeBtn.addEventListener("click", async () => {
   }
   if (!pendingTheme) return;
 
-  themeCodeBtn.disabled = true;
-  if (themePayTip) themePayTip.textContent = "正在验证...";
-
+  // Check if this code was already used (localStorage)
   try {
-    const resp = await fetch(`${PAY_WORKER_URL}/claim`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code, theme: pendingTheme }),
-    });
+    const usedCodes = JSON.parse(localStorage.getItem(CODE_KEY) || "{}");
+    const existing = usedCodes[code];
 
-    const data = await resp.json();
-
-    if (data.errcode !== 0) {
-      if (themePayTip) themePayTip.textContent = `验证失败: ${data.errmsg}`;
-      themeCodeBtn.disabled = false;
-      return;
-    }
-
-    if (data.already_used_by_theme) {
-      // This code was already used for a different theme
-      if (data.already_used_by_theme === pendingTheme) {
-        // Same theme, just unlock it
+    if (existing) {
+      if (existing === pendingTheme) {
+        // Same theme - just unlock
         const unlocked = getUnlockedThemes();
         if (!unlocked.includes(pendingTheme)) {
           unlocked.push(pendingTheme);
@@ -983,20 +968,22 @@ themeCodeBtn.addEventListener("click", async () => {
       } else {
         if (themePayTip) themePayTip.textContent = "该验证码已被使用，请使用其他交易号";
       }
-    } else if (data.claimed) {
-      // Successfully claimed
-      const unlocked = getUnlockedThemes();
-      if (!unlocked.includes(pendingTheme)) {
-        unlocked.push(pendingTheme);
-        saveUnlockedThemes(unlocked);
-      }
-      applyTheme(pendingTheme);
-      if (themePayTip) themePayTip.textContent = "解锁成功！";
-      setTimeout(() => { themePaySection.hidden = true; }, 1500);
+      return;
     }
+
+    // Record the code and unlock the theme
+    usedCodes[code] = pendingTheme;
+    localStorage.setItem(CODE_KEY, JSON.stringify(usedCodes));
+
+    const unlocked = getUnlockedThemes();
+    if (!unlocked.includes(pendingTheme)) {
+      unlocked.push(pendingTheme);
+      saveUnlockedThemes(unlocked);
+    }
+    applyTheme(pendingTheme);
+    if (themePayTip) themePayTip.textContent = "解锁成功！";
+    setTimeout(() => { themePaySection.hidden = true; }, 1500);
   } catch (err) {
-    if (themePayTip) themePayTip.textContent = "网络错误，请稍后重试";
-  } finally {
-    themeCodeBtn.disabled = false;
+    if (themePayTip) themePayTip.textContent = "操作失败，请重试";
   }
 });
