@@ -909,7 +909,7 @@ themeButton.addEventListener("click", () => {
   themePaySection.hidden = true;
   themeCodeInput.value = "";
   pendingTheme = null;
-  if (themePayTip) themePayTip.textContent = "支付后，请在支付宝账单中找到交易号，输入后6位";
+  if (themePayTip) themePayTip.textContent = "支付后，请通过支付宝联系我获取解锁密码";
   // Mark unlocked themes
   const unlocked = getUnlockedThemes();
   themeOptions.querySelectorAll(".theme-option").forEach((btn) => {
@@ -938,18 +938,18 @@ themeOptions.addEventListener("click", (e) => {
   pendingTheme = name;
   themePaySection.hidden = false;
   themeCodeInput.value = "";
-  if (themePayTip) themePayTip.textContent = "支付后，请在支付宝账单中找到交易号，输入后6位";
+  if (themePayTip) themePayTip.textContent = "支付后，请通过支付宝联系我获取解锁密码";
 });
 
 themeCodeBtn.addEventListener("click", () => {
   const code = themeCodeInput.value.trim();
-  if (!code || code.length !== 6 || !/^\d{6}$/.test(code)) {
-    if (themePayTip) themePayTip.textContent = "请输入正确的6位数字验证码";
+  if (!code || code.length < 3 || code.length > 20) {
+    if (themePayTip) themePayTip.textContent = "请输入正确的解锁密码（3-20位）";
     return;
   }
   if (!pendingTheme) return;
 
-  // Check if this code was already used (localStorage)
+  // Check if this password was already used (localStorage)
   try {
     const usedCodes = JSON.parse(localStorage.getItem(CODE_KEY) || "{}");
     const existing = usedCodes[code];
@@ -966,12 +966,12 @@ themeCodeBtn.addEventListener("click", () => {
         if (themePayTip) themePayTip.textContent = "主题已解锁！";
         setTimeout(() => { themePaySection.hidden = true; }, 1500);
       } else {
-        if (themePayTip) themePayTip.textContent = "该验证码已被使用，请使用其他交易号";
+        if (themePayTip) themePayTip.textContent = "该密码已被使用，请联系我获取新密码";
       }
       return;
     }
 
-    // Record the code and unlock the theme
+    // Record the password and unlock the theme
     usedCodes[code] = pendingTheme;
     localStorage.setItem(CODE_KEY, JSON.stringify(usedCodes));
 
