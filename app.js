@@ -909,7 +909,7 @@ themeButton.addEventListener("click", () => {
   themePaySection.hidden = true;
   themeCodeInput.value = "";
   pendingTheme = null;
-  if (themePayTip) themePayTip.textContent = "支付后，请通过支付宝联系我获取解锁密码";
+  if (themePayTip) themePayTip.textContent = "支付后支付宝会收到密码";
   // Mark unlocked themes
   const unlocked = getUnlockedThemes();
   themeOptions.querySelectorAll(".theme-option").forEach((btn) => {
@@ -938,7 +938,7 @@ themeOptions.addEventListener("click", (e) => {
   pendingTheme = name;
   themePaySection.hidden = false;
   themeCodeInput.value = "";
-  if (themePayTip) themePayTip.textContent = "支付后，请通过支付宝联系我获取解锁密码";
+  if (themePayTip) themePayTip.textContent = "支付后支付宝会收到密码";
 });
 
 const THEME_PASSWORD = "1tte1994re";
