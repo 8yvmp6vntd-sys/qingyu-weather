@@ -952,7 +952,9 @@ themeOptions.addEventListener("click", (e) => {
     return;
   }
 
-  // Show payment section with QR code
+  // 未解锁，提示用户并展示支付区域
+  alert("该主题未解锁，请支付后获取密码");
+
   pendingTheme = name;
   themePaySection.hidden = false;
   themeCodeInput.value = "";
