@@ -470,6 +470,18 @@ h1 {
   background: rgba(255, 255, 255, 0.15);
 }
 
+.version-badge {
+  display: inline-block;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 10px;
+  color: var(--muted);
+  font-size: 0.6rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
+  letter-spacing: 0.02em;
+}
+
 .theme-dialog {
   width: min(420px, calc(100% - 24px));
   border: 1px solid var(--line);
