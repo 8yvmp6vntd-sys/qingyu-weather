@@ -14,9 +14,9 @@
   <link rel="icon" sizes="192x192" href="./icon-192.png" />
   <link rel="icon" sizes="512x512" href="./icon-512.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-  <link rel="preload" href="./styles.css?v=32" as="style" />
-  <link rel="preload" href="./app.js?v=37" as="script" />
-  <link rel="stylesheet" href="./styles.css?v=32" />
+  <link rel="preload" href="./styles.css?v=33" as="style" />
+  <link rel="preload" href="./app.js?v=38" as="script" />
+  <link rel="stylesheet" href="./styles.css?v=33" />
 </head>
 <body>
   <main class="app-shell">
@@ -50,7 +50,7 @@
       <button class="theme-button" id="themeButton" type="button">🎨 更换背景</button>
       <button class="donate-button" id="donateButton" type="button">☕ 打赏创作者</button>
       <button class="feedback-button" id="feedbackButton" type="button">💬 问题反馈</button>
-      <span class="version-badge">v2.0</span>
+      <span class="version-badge">v2.1</span>
     </div>
   </main>
 
@@ -132,7 +132,9 @@
       </div>
       <div class="theme-pay-section" id="themePaySection" hidden>
         <p class="theme-pay-info">请使用支付宝扫描下方二维码支付 <strong>¥1</strong></p>
-        <img class="theme-pay-qr" id="themePayQr" src="./pay-qr.jpeg" alt="支付宝收款码" />
+        <a href="alipays://platformapi/startapp" class="theme-pay-link" onclick="window.location.href='alipays://platformapi/startapp';return false;" title="点击打开支付宝">
+          <img class="theme-pay-qr" id="themePayQr" src="./pay-qr.jpeg" alt="支付宝收款码" />
+        </a>
         <p class="theme-pay-tip" id="theme-pay-tip">支付后支付宝会收到密码</p>
         <div class="theme-code-row">
           <input class="theme-code-input" id="themeCodeInput" type="text" maxlength="20" placeholder="输入解锁密码" autocomplete="off" />
@@ -196,6 +198,6 @@
   </template>
 
   <script src="./city-data.js?v=2"></script>
-  <script src="./app.js?v=37" defer></script>
+  <script src="./app.js?v=38" defer></script>
 </body>
 </html>
