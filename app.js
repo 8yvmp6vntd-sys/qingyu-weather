@@ -1,3 +1,20 @@
+/* 仅允许天气列表区域滑动，其他区域禁止滑动 */
+document.addEventListener(
+  "touchmove",
+  (e) => {
+    const target = e.target;
+    if (
+      target.closest(".hourly-list") ||
+      target.closest(".daily-list") ||
+      target.closest("dialog")
+    ) {
+      return;
+    }
+    e.preventDefault();
+  },
+  { passive: false }
+);
+
 const locationButton = document.querySelector("#locationButton");
 const cityDialog = document.querySelector("#cityDialog");
 const cityForm = document.querySelector("#cityForm");
