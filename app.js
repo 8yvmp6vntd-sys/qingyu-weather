@@ -953,7 +953,8 @@ themeCodeBtn.addEventListener("click", () => {
 
   // Verify fixed password
   if (code !== THEME_PASSWORD) {
-    if (themePayTip) themePayTip.textContent = "密码错误，请确认后重新输入";
+    alert("密码错误，请确认后重新输入");
+    themeCodeInput.value = "";
     return;
   }
 
