@@ -882,24 +882,6 @@ function getUnlockedThemes() {
   }
 }
 
-// On load, reset unlocked themes to only default (force password for all others)
-// This clears any previously unlocked themes from the old "any password" system
-(function resetUnlockedList() {
-  try {
-    const raw = localStorage.getItem(themeStorageKey);
-    if (raw) {
-      const themes = JSON.parse(raw);
-      const filtered = themes.filter((t) => t === "default");
-      localStorage.setItem(themeStorageKey, JSON.stringify(filtered));
-    }
-    // If active theme is not default, reset it
-    const activeTheme = localStorage.getItem("qingyu-active-theme");
-    if (activeTheme && activeTheme !== "default") {
-      localStorage.removeItem("qingyu-active-theme");
-    }
-  } catch {}
-})();
-
 function saveUnlockedThemes(themes) {
   try {
     localStorage.setItem(themeStorageKey, JSON.stringify(themes));
