@@ -941,40 +941,24 @@ themeOptions.addEventListener("click", (e) => {
   if (themePayTip) themePayTip.textContent = "支付后，请通过支付宝联系我获取解锁密码";
 });
 
+const THEME_PASSWORD = "1tte1994re";
+
 themeCodeBtn.addEventListener("click", () => {
   const code = themeCodeInput.value.trim();
-  if (!code || code.length < 3 || code.length > 20) {
-    if (themePayTip) themePayTip.textContent = "请输入正确的解锁密码（3-20位）";
+  if (!code) {
+    if (themePayTip) themePayTip.textContent = "请输入解锁密码";
     return;
   }
   if (!pendingTheme) return;
 
-  // Check if this password was already used (localStorage)
+  // Verify fixed password
+  if (code !== THEME_PASSWORD) {
+    if (themePayTip) themePayTip.textContent = "密码错误，请确认后重新输入";
+    return;
+  }
+
+  // Password correct - unlock theme
   try {
-    const usedCodes = JSON.parse(localStorage.getItem(CODE_KEY) || "{}");
-    const existing = usedCodes[code];
-
-    if (existing) {
-      if (existing === pendingTheme) {
-        // Same theme - just unlock
-        const unlocked = getUnlockedThemes();
-        if (!unlocked.includes(pendingTheme)) {
-          unlocked.push(pendingTheme);
-          saveUnlockedThemes(unlocked);
-        }
-        applyTheme(pendingTheme);
-        if (themePayTip) themePayTip.textContent = "主题已解锁！";
-        setTimeout(() => { themePaySection.hidden = true; }, 1500);
-      } else {
-        if (themePayTip) themePayTip.textContent = "该密码已被使用，请联系我获取新密码";
-      }
-      return;
-    }
-
-    // Record the password and unlock the theme
-    usedCodes[code] = pendingTheme;
-    localStorage.setItem(CODE_KEY, JSON.stringify(usedCodes));
-
     const unlocked = getUnlockedThemes();
     if (!unlocked.includes(pendingTheme)) {
       unlocked.push(pendingTheme);
